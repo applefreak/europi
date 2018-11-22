@@ -7,7 +7,7 @@ import RPi.GPIO as GPIO
 from menu import Menu
 
 disp = Adafruit_SSD1306.SSD1306_128_32(rst=None)
-menu = Menu(disp, { 'pin1': 14, 'pin2': 15, 'sw': 4 }, ['Bluetooth Setup...', 'Record...', 'Shutdown'])
+menu = Menu(disp, { 'pin1': 14, 'pin2': 15, 'sw': 4 }, ['Bluetooth Setup...', 'Record...', 'Shutdown', 'trolol', 'zomg'])
 
 def term_handler (arg1, ar2):
     GPIO.cleanup()

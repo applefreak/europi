@@ -41,6 +41,9 @@ class Menu():
     def __init__(self, disp, encoder, items = []):
         self.items = items
         self.pointer = 0
+        self.row = 0
+        self.last_row = 0
+        self.last_slice = None
         self.disp = Display(disp)
         self.disp.init_display()
         self.draw()
@@ -55,16 +58,30 @@ class Menu():
         self.encoder = RotaryEncoder(encoder["pin1"], encoder["pin2"], encoder["sw"], encoder_ev)
 
     def draw(self):
-        self.disp.draw_rows(self.items, self.pointer)
+        tmp_slice = None
+        if self.row == self.last_row:
+            if self.last_row == 0:
+                tmp_slice = self.items[self.pointer:self.pointer + 3]
+            else:
+                tmp_slice = self.items[self.pointer - 2:self.pointer + 1]
+            self.disp.draw_rows(tmp_slice, self.row)
+            self.last_slice = tmp_slice
+        else:
+            self.disp.draw_rows(self.last_slice, self.row)
+        self.last_row = self.row
 
     def next(self):
         if self.pointer + 1 <= len(self.items) - 1:
             self.pointer += 1
+        if self.row < 2:
+            self.row += 1
         self.draw()
 
     def prev(self):
         if self.pointer - 1 >= 0:
             self.pointer -= 1
+        if self.row > 0:
+            self.row -= 1
         self.draw()
 
     def exec_item(self):
